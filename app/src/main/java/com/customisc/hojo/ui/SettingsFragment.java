@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui;
+package com.customisc.hojo.ui;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -19,13 +19,13 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import it.danieleverducci.ojo.R;
-import it.danieleverducci.ojo.Settings;
-import it.danieleverducci.ojo.SharedPreferencesManager;
-import it.danieleverducci.ojo.databinding.FragmentSettingsItemListBinding;
-import it.danieleverducci.ojo.entities.Camera;
-import it.danieleverducci.ojo.ui.adapters.SettingsRecyclerViewAdapter;
-import it.danieleverducci.ojo.utils.ItemMoveCallback;
+import com.customisc.hojo.R;
+import com.customisc.hojo.Settings;
+import com.customisc.hojo.SharedPreferencesManager;
+import com.customisc.hojo.databinding.FragmentSettingsItemListBinding;
+import com.customisc.hojo.entities.Camera;
+import com.customisc.hojo.ui.adapters.SettingsRecyclerViewAdapter;
+import com.customisc.hojo.utils.ItemMoveCallback;
 
 /**
  * A fragment representing a list of Items.

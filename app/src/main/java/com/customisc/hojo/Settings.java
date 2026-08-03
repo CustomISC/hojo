@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo;
+package com.customisc.hojo;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.danieleverducci.ojo.entities.Camera;
+import com.customisc.hojo.entities.Camera;
 
 /**
  * Manages the settings persistence

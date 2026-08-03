@@ -6,21 +6,37 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "it.danieleverducci.ojo"
-        minSdkVersion 15
+        applicationId "com.customisc.hojo"
+        minSdkVersion 17
         targetSdkVersion 33
-        versionCode 9
-        versionName "0.1.4"
+        versionCode 11
+        versionName "1.0.0"
 
         vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // Release signing is optional and env-var driven: unset locally (and on F-Droid's
+    // build server, which applies its own signing) this simply yields an unsigned APK.
+    signingConfigs {
+        release {
+            if (System.getenv("HOJO_KEYSTORE_PATH") != null) {
+                storeFile file(System.getenv("HOJO_KEYSTORE_PATH"))
+                storePassword System.getenv("HOJO_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("HOJO_KEY_ALIAS") ?: "hojo-release"
+                keyPassword System.getenv("HOJO_KEY_PASSWORD") ?: System.getenv("HOJO_KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (System.getenv("HOJO_KEYSTORE_PATH") != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {
@@ -30,7 +46,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-    namespace 'it.danieleverducci.ojo'
+    namespace 'com.customisc.hojo'
 }
 
 dependencies {
@@ -39,10 +55,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
-    implementation 'de.mrmaffen:libvlc-android:2.1.12@aar'
+    implementation 'org.videolan.android:libvlc-all:3.6.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

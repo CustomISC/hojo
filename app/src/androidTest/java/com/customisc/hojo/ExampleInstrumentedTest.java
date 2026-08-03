@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo;
+package com.customisc.hojo;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("it.danieleverducci.ojo", appContext.getPackageName());
+        assertEquals("com.customisc.hojo", appContext.getPackageName());
     }
 }

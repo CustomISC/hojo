@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui.adapters;
+package com.customisc.hojo.ui.adapters;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import it.danieleverducci.ojo.R;
-import it.danieleverducci.ojo.databinding.FragmentSettingsItemBinding;
-import it.danieleverducci.ojo.entities.Camera;
-import it.danieleverducci.ojo.utils.ItemMoveCallback;
+import com.customisc.hojo.R;
+import com.customisc.hojo.databinding.FragmentSettingsItemBinding;
+import com.customisc.hojo.entities.Camera;
+import com.customisc.hojo.utils.ItemMoveCallback;
 
 import java.util.Collections;
 import java.util.List;

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/CameraUrlFragment"
-        android:name="it.danieleverducci.ojo.ui.StreamUrlFragment"
+        android:name="com.customisc.hojo.ui.StreamUrlFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_add_stream">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="it.danieleverducci.ojo.ui.SettingsFragment"
+        android:name="com.customisc.hojo.ui.SettingsFragment"
         android:label="fragment_settings_item_list"
         tools:layout="@layout/fragment_settings_item_list" >
 
@@ -29,6 +29,6 @@
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
-        android:name="it.danieleverducci.ojo.ui.InfoFragment"
+        android:name="com.customisc.hojo.ui.InfoFragment"
         android:label="InfoFragment" />
 </navigation>

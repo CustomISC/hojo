@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui;
+package com.customisc.hojo.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -8,8 +8,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import it.danieleverducci.ojo.SharedPreferencesManager;
-import it.danieleverducci.ojo.databinding.ActivityMainBinding;
+import com.customisc.hojo.SharedPreferencesManager;
+import com.customisc.hojo.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
