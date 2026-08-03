@@ -50,7 +50,7 @@
         android:padding="10dp"
         android:layout_weight="0"
         app:srcCompat="@drawable/ic_delete"
-        app:tint="@color/purple_200" />
+        app:tint="@color/teal_200" />
 
     <ImageView
         android:id="@+id/camera_drag_handle"
@@ -59,6 +59,6 @@
         android:padding="10dp"
         android:layout_weight="0"
         app:srcCompat="@drawable/ic_drag_handle"
-        app:tint="@color/purple_200" />
+        app:tint="@color/teal_200" />
 
 </LinearLayout>
