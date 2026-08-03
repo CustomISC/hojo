@@ -1,0 +1,1 @@
+v1.0.0: first stable hOjo release. Fork of Ojo adding an optional secondary, high-resolution RTSP stream per camera, used automatically when that camera is viewed fullscreen.
