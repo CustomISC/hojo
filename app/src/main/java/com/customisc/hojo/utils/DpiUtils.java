@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.utils;
+package com.customisc.hojo.utils;
 
 import android.content.Context;
 import android.content.res.Resources;

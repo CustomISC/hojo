@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui;
+package com.customisc.hojo.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 
-import org.videolan.libvlc.IVLCVout;
+import org.videolan.libvlc.interfaces.IVLCVout;
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.Media;
 import org.videolan.libvlc.MediaPlayer;
@@ -30,11 +30,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import it.danieleverducci.ojo.R;
-import it.danieleverducci.ojo.Settings;
-import it.danieleverducci.ojo.databinding.FragmentSurveillanceBinding;
-import it.danieleverducci.ojo.entities.Camera;
-import it.danieleverducci.ojo.utils.DpiUtils;
+import com.customisc.hojo.R;
+import com.customisc.hojo.Settings;
+import com.customisc.hojo.databinding.FragmentSurveillanceBinding;
+import com.customisc.hojo.entities.Camera;
+import com.customisc.hojo.utils.DpiUtils;
 
 /**
  * Some streams to test:
@@ -56,6 +56,7 @@ public class SurveillanceFragment extends Fragment {
     private FragmentSurveillanceBinding binding;
     private List<CameraView> cameraViews = new ArrayList<>();
     private boolean fullscreenCameraView = false;
+    private CameraView currentFullscreenCameraView = null;
     private LinearLayout.LayoutParams cameraViewLayoutParams;
     private LinearLayout.LayoutParams rowLayoutParams;
     private LinearLayout.LayoutParams hiddenLayoutParams;
@@ -93,6 +94,7 @@ public class SurveillanceFragment extends Fragment {
         leanbackMode(true);
 
         fullscreenCameraView = false;
+        currentFullscreenCameraView = null;
         addAllCameras();
 
         // Start playback for all streams
@@ -109,6 +111,10 @@ public class SurveillanceFragment extends Fragment {
                 if(fullscreenCameraView && cameraViews.size() > 1) {
                     fullscreenCameraView = false;
                     showAllCameras();
+                    if (currentFullscreenCameraView != null) {
+                        currentFullscreenCameraView.switchToLowResolution();
+                        currentFullscreenCameraView = null;
+                    }
                     return true;
                 }
                 return false;
@@ -173,8 +179,12 @@ public class SurveillanceFragment extends Fragment {
                             fullscreenCameraView = !fullscreenCameraView;
                             if (fullscreenCameraView) {
                                 hideAllCameraViewsButNot(v);
+                                currentFullscreenCameraView = cv;
+                                cv.switchToFullResolutionIfAvailable();
                             } else {
                                 showAllCameras();
+                                cv.switchToLowResolution();
+                                currentFullscreenCameraView = null;
                             }
                         }
                     });
@@ -259,9 +269,9 @@ public class SurveillanceFragment extends Fragment {
     }
 
     private void expandToCameraViewIfRequired() {
-        final String EXTRA_CAMERA_NUMBER = "it.danieleverducci.ojo.CAMERA_NUMBER";
-        final String EXTRA_CAMERA_NAME = "it.danieleverducci.ojo.CAMERA_NAME";
-        final String OPEN_CAMERA = "it.danieleverducci.ojo.OPEN_CAMERA";
+        final String EXTRA_CAMERA_NUMBER = "com.customisc.hojo.CAMERA_NUMBER";
+        final String EXTRA_CAMERA_NAME = "com.customisc.hojo.CAMERA_NAME";
+        final String OPEN_CAMERA = "com.customisc.hojo.OPEN_CAMERA";
 
         if (this.getActivity() == null) {
             return;
@@ -284,13 +294,20 @@ public class SurveillanceFragment extends Fragment {
         if (index < 0 || cameraViews.size() <= index) {
             return;
         }
-        hideAllCameraViewsButNot(cameraViews.get(index).surfaceView);
+        fullscreenCameraView = true;
+        CameraView cv = cameraViews.get(index);
+        hideAllCameraViewsButNot(cv.surfaceView);
+        currentFullscreenCameraView = cv;
+        cv.switchToFullResolutionIfAvailable();
     }
 
     private void expandByName(String name) {
         for(CameraView cameraView: cameraViews) {
             if (cameraView.camera.getName().equals(name)) {
+                fullscreenCameraView = true;
                 hideAllCameraViewsButNot(cameraView.surfaceView);
+                currentFullscreenCameraView = cameraView;
+                cameraView.switchToFullResolutionIfAvailable();
                 break;
             }
         }
@@ -350,6 +367,33 @@ public class SurveillanceFragment extends Fragment {
          * Starts the playback.
          */
         public void startPlayback() {
+            mediaPlayer.play();
+        }
+
+        /**
+         * Switches playback to the camera's secondary (high-resolution) stream, if configured.
+         */
+        public void switchToFullResolutionIfAvailable() {
+            String secondaryUrl = camera.getSecondaryRtspUrl();
+            if (secondaryUrl != null && !secondaryUrl.isEmpty()) {
+                switchStream(secondaryUrl);
+            }
+        }
+
+        /**
+         * Switches playback back to the camera's main stream, if it wasn't already the one playing.
+         */
+        public void switchToLowResolution() {
+            String secondaryUrl = camera.getSecondaryRtspUrl();
+            if (secondaryUrl != null && !secondaryUrl.isEmpty()) {
+                switchStream(camera.getRtspUrl());
+            }
+        }
+
+        private void switchStream(String url) {
+            mediaPlayer.stop();
+            Media m = new Media(libvlc, Uri.parse(url));
+            mediaPlayer.setMedia(m);
             mediaPlayer.play();
         }
 

@@ -1,1 +1,1 @@
-Ojo è un semplice client di videosorveglianza
+hOjo è un semplice client di videosorveglianza con stream secondari ad alta risoluzione

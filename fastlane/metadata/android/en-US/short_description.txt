@@ -1,1 +1,1 @@
-Ojo is a basic IP Camera surveillance wall.
+hOjo is a basic IP Camera surveillance wall with optional high-res streams.

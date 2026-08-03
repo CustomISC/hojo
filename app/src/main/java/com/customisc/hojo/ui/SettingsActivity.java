@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui;
+package com.customisc.hojo.ui;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import it.danieleverducci.ojo.R;
-import it.danieleverducci.ojo.SharedPreferencesManager;
-import it.danieleverducci.ojo.databinding.ActivitySettingsBinding;
+import com.customisc.hojo.R;
+import com.customisc.hojo.SharedPreferencesManager;
+import com.customisc.hojo.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";

@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui;
+package com.customisc.hojo.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import it.danieleverducci.ojo.databinding.FragmentInfoBinding;
+import com.customisc.hojo.databinding.FragmentInfoBinding;
 
 
 public class InfoFragment extends Fragment {

@@ -1,6 +1,7 @@
-Ojo è un semplice client di videosorveglianza.
+hOjo è un fork di Ojo, un semplice client di videosorveglianza, con l'aggiunta del supporto per uno stream secondario ad alta risoluzione per ciascuna camera.
 Mostra gli streams RTSP delle IP Cam nella classica configurazione a tiles. Il numero di tiles è determinato dal numero di streams configurati (se è uno solo va a tutto schermo, altrimenti 2x2, 3x3, 4x4 etc).
 Il numero massimo di IP Cam supportate è determinato dalla potenza del dispositivo.
 
-Il decoding e rendering dello stream è demandato alla libreria di VLC, a cui va il mio ringraziamento: senza il loro sforzo quest'app non sarebbe potuta esistere.
-App sviluppata appositamente per F-Droid, dato che non sono riuscito a trovarne una open source già pubblicata.
+Se per una camera è configurato un URL RTSP secondario ad alta risoluzione (ad esempio lo stream principale di una camera il cui sub-stream è usato nella griglia), quell'URL viene usato quando la camera viene espansa a tutto schermo.
+
+Il decoding e rendering dello stream è demandato alla libreria di VLC: senza il loro sforzo quest'app non sarebbe potuta esistere.

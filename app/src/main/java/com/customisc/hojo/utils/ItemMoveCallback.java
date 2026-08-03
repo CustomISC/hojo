@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.utils;
+package com.customisc.hojo.utils;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
