@@ -16,7 +16,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
-        android:name="it.danieleverducci.ojo.ui.SettingsFragment"
+        android:name="com.customisc.hojo.ui.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

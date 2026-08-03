@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ojo</string>
+    <string name="app_name">hOjo</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -16,15 +16,17 @@
     <string name="add_stream_invalid_url_dismiss">Dismiss</string>
     <string name="add_stream_error_saving">An error has occurred while saving configuration</string>
     <string name="add_stream">Please insert your camera\'s RTSP stream. Note that the URL differs from camera to camera: you can find the complete URL in your camera\'s settings or user manual.</string>
+    <string name="add_stream_placeholder_secondary_url">rtsp://username:password@192.168.1.123:554 (optional)</string>
+    <string name="add_stream_secondary">Optional: a secondary, high-resolution stream URL to use when this camera is viewed fullscreen.</string>
     <string name="menuitem_allow_rotation">Allow screen rotation</string>
     <string name="menuitem_deny_rotation">Landscape only</string>
     <string name="menuitem_info">Info</string>
     <string name="menuitem_add_camera">Add</string>
 
-    <string name="app_info_title">About Ojo</string>
-    <string name="app_info_creator_desc">Created by Daniele Verducci.</string>
-    <string name="app_info_license_desc">This application is licensed under the GNU GENERAL PUBLIC LICENSE v3+. You can obtain a copy here: https://raw.githubusercontent.com/penguin86/ojo/master/LICENSE</string>
-    <string name="app_info_repo_desc">The source code can be obtained at the GitHub repository: https://github.com/penguin86/ojo</string>
+    <string name="app_info_title">About hOjo</string>
+    <string name="app_info_creator_desc">hOjo is a fork of Ojo, originally created by Daniele Verducci, adding support for a secondary high-resolution camera stream. This fork is maintained by CustomISC and is not affiliated with the original author.</string>
+    <string name="app_info_license_desc">This application is licensed under the GNU GENERAL PUBLIC LICENSE v3+. You can obtain a copy here: https://raw.githubusercontent.com/CustomISC/hojo/stable/LICENSE</string>
+    <string name="app_info_repo_desc">The source code can be obtained at the GitHub repository: https://github.com/CustomISC/hojo (forked from https://github.com/penguin86/ojo)</string>
     <string name="app_info_lib_desc">This app is made possible by the gorgeous VLC and VLC-Android teams effort! You can know more or obtain the source code at https://code.videolan.org/videolan/vlc-android</string>
     <string name="app_info_translators_title">Translators:</string>
     <string name="app_info_translators_names" translatable="false">Yurt Page (Russian)</string>

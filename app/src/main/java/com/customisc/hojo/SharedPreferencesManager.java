@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo;
+package com.customisc.hojo;
 
 import android.content.Context;
 import android.content.SharedPreferences;

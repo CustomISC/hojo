@@ -1,0 +1,1 @@
+First hOjo release, forked from Ojo. Added support for an optional secondary, high-resolution RTSP stream per camera, used when that camera is viewed fullscreen.

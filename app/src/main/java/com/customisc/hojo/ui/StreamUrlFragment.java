@@ -1,4 +1,4 @@
-package it.danieleverducci.ojo.ui;
+package com.customisc.hojo.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,10 +12,10 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import it.danieleverducci.ojo.R;
-import it.danieleverducci.ojo.Settings;
-import it.danieleverducci.ojo.databinding.FragmentAddStreamBinding;
-import it.danieleverducci.ojo.entities.Camera;
+import com.customisc.hojo.R;
+import com.customisc.hojo.Settings;
+import com.customisc.hojo.databinding.FragmentAddStreamBinding;
+import com.customisc.hojo.entities.Camera;
 
 public class StreamUrlFragment extends Fragment {
     public static final String ARG_CAMERA = "arg_camera";
@@ -49,6 +49,7 @@ public class StreamUrlFragment extends Fragment {
             binding.streamName.setText(c.getName());
             binding.streamName.setHint(getContext().getString(R.string.stream_list_default_camera_name).replace("{camNo}", (this.selectedCamera+1)+""));
             binding.streamUrl.setText(c.getRtspUrl());
+            binding.streamSecondaryUrl.setText(c.getSecondaryRtspUrl());
         }
 
         return binding.getRoot();
@@ -69,18 +70,29 @@ public class StreamUrlFragment extends Fragment {
                     return;
                 }
 
+                // Secondary url is optional, but if filled must be valid
+                String secondaryUrl = binding.streamSecondaryUrl.getText().toString();
+                if (!secondaryUrl.isEmpty() && !(secondaryUrl.startsWith("rtsp://") || secondaryUrl.startsWith("http://"))) {
+                    Snackbar.make(view, R.string.add_stream_invalid_url, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.add_stream_invalid_url_dismiss, null).show();
+                    return;
+                }
+
                 // Name can be empty
                 String name = binding.streamName.getText().toString();
 
+                Camera c;
                 if (StreamUrlFragment.this.selectedCamera != null) {
                     // Update camera
-                    Camera c = settings.getCameras().get(StreamUrlFragment.this.selectedCamera);
+                    c = settings.getCameras().get(StreamUrlFragment.this.selectedCamera);
                     c.setName(name);
                     c.setRtspUrl(url);
                 } else {
                     // Add stream to list
-                    settings.addCamera(new Camera(name, url));
+                    c = new Camera(name, url);
+                    settings.addCamera(c);
                 }
+                c.setSecondaryRtspUrl(secondaryUrl.isEmpty() ? null : secondaryUrl);
 
                 // Save
                 if (!settings.save()) {
