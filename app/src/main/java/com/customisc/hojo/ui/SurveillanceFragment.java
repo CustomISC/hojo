@@ -191,7 +191,7 @@ public class SurveillanceFragment extends Fragment {
                 } else {
                     // Cameras are less than the maximum number of cells in grid: fill remaining cells with empty views
                     View ev = new View(getContext());
-                    ev.setBackgroundColor(getResources().getColor(R.color.purple_700));
+                    ev.setBackgroundColor(getResources().getColor(R.color.teal_700));
                     row.addView(ev, cameraViewLayoutParams);
                 }
                 camIdx++;

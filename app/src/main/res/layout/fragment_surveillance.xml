@@ -7,6 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.StreamUrlFragment"
-    android:background="@color/purple_500">
+    android:background="@color/teal_500">
 
 </LinearLayout>
