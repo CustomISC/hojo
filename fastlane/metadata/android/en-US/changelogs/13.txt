@@ -1,0 +1,1 @@
+v1.1.1: fixes pinch-to-zoom and drag-to-pan feeling increasingly unresponsive the more you'd already zoomed in, and raises the max zoom to 10x.

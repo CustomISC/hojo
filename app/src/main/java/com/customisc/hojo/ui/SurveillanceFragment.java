@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.core.view.WindowCompat;
@@ -248,7 +249,7 @@ public class SurveillanceFragment extends Fragment {
         );
 
         // Add to layout
-        rowContainer.addView(cv.surfaceView, cameraViewLayoutParams);
+        rowContainer.addView(cv.cameraContainer, cameraViewLayoutParams);
 
         cameraViews.add(cv);
         return cv;
@@ -301,7 +302,7 @@ public class SurveillanceFragment extends Fragment {
         }
         fullscreenCameraView = true;
         CameraView cv = cameraViews.get(index);
-        hideAllCameraViewsButNot(cv.surfaceView);
+        hideAllCameraViewsButNot(cv.cameraContainer);
         currentFullscreenCameraView = cv;
         cv.switchToFullResolutionIfAvailable();
     }
@@ -310,7 +311,7 @@ public class SurveillanceFragment extends Fragment {
         for(CameraView cameraView: cameraViews) {
             if (cameraView.camera.getName().equals(name)) {
                 fullscreenCameraView = true;
-                hideAllCameraViewsButNot(cameraView.surfaceView);
+                hideAllCameraViewsButNot(cameraView.cameraContainer);
                 currentFullscreenCameraView = cameraView;
                 cameraView.switchToFullResolutionIfAvailable();
                 break;
@@ -323,8 +324,14 @@ public class SurveillanceFragment extends Fragment {
      */
     private class CameraView {
         private static final float MIN_ZOOM_SCALE = 1f;
-        private static final float MAX_ZOOM_SCALE = 5f;
+        private static final float MAX_ZOOM_SCALE = 10f;
 
+        // Unscaled wrapper: owns touch/click/focus handling so gesture coordinates stay
+        // in stable, untransformed space. If these were attached directly to surfaceView,
+        // Android would deliver touch events to it already transformed by its own (changing)
+        // scale, feeding back into the gesture detectors and making zoom/pan feel
+        // increasingly unresponsive the further you'd already zoomed in.
+        protected FrameLayout cameraContainer;
         protected SurfaceView surfaceView;
         protected MediaPlayer mediaPlayer;
         protected IVLCVout ivlcVout;
@@ -341,13 +348,17 @@ public class SurveillanceFragment extends Fragment {
             this.libvlc = new LibVLC(context, new ArrayList<>(Arrays.asList(VLC_OPTIONS)));
 
             surfaceView = new SurfaceView(context);
-            surfaceView.setOnClickListener(new View.OnClickListener() {
+
+            cameraContainer = new FrameLayout(context);
+            cameraContainer.addView(surfaceView, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            cameraContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                 }
             });
-            surfaceView.setOnFocusChangeListener((view, hasFocus) -> view.setBackgroundResource(hasFocus ? R.drawable.focus_border : 0));
+            cameraContainer.setOnFocusChangeListener((view, hasFocus) -> view.setBackgroundResource(hasFocus ? R.drawable.focus_border : 0));
 
             // Pinch-to-zoom and drag-to-pan, active only while this camera is the one
             // shown fullscreen (a no-op tap still reaches the grid/fullscreen toggle
@@ -364,7 +375,7 @@ public class SurveillanceFragment extends Fragment {
             panGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onSingleTapUp(MotionEvent e) {
-                    surfaceView.performClick();
+                    cameraContainer.performClick();
                     return true;
                 }
 
@@ -376,7 +387,7 @@ public class SurveillanceFragment extends Fragment {
                     return true;
                 }
             });
-            surfaceView.setOnTouchListener((v, event) -> {
+            cameraContainer.setOnTouchListener((v, event) -> {
                 scaleGestureDetector.onTouchEvent(event);
                 panGestureDetector.onTouchEvent(event);
                 return true;
@@ -407,7 +418,7 @@ public class SurveillanceFragment extends Fragment {
         }
 
         public void setOnClickListener(View.OnClickListener listener) {
-            surfaceView.setOnClickListener(listener);
+            cameraContainer.setOnClickListener(listener);
         }
 
         /**
