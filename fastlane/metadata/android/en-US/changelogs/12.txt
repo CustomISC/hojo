@@ -1,0 +1,1 @@
+v1.1.0: rebranded color scheme (purple to teal) with a new app icon, and pinch-to-zoom / drag-to-pan support when viewing a camera fullscreen.
