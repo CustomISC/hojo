@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -113,6 +116,7 @@ public class SurveillanceFragment extends Fragment {
                     showAllCameras();
                     if (currentFullscreenCameraView != null) {
                         currentFullscreenCameraView.switchToLowResolution();
+                        currentFullscreenCameraView.resetZoomAndPan();
                         currentFullscreenCameraView = null;
                     }
                     return true;
@@ -184,6 +188,7 @@ public class SurveillanceFragment extends Fragment {
                             } else {
                                 showAllCameras();
                                 cv.switchToLowResolution();
+                                cv.resetZoomAndPan();
                                 currentFullscreenCameraView = null;
                             }
                         }
@@ -191,7 +196,7 @@ public class SurveillanceFragment extends Fragment {
                 } else {
                     // Cameras are less than the maximum number of cells in grid: fill remaining cells with empty views
                     View ev = new View(getContext());
-                    ev.setBackgroundColor(getResources().getColor(R.color.purple_700));
+                    ev.setBackgroundColor(getResources().getColor(R.color.teal_700));
                     row.addView(ev, cameraViewLayoutParams);
                 }
                 camIdx++;
@@ -317,11 +322,19 @@ public class SurveillanceFragment extends Fragment {
      * Contains all entities (views and java entities) related to a camera stream viewer
      */
     private class CameraView {
+        private static final float MIN_ZOOM_SCALE = 1f;
+        private static final float MAX_ZOOM_SCALE = 5f;
+
         protected SurfaceView surfaceView;
         protected MediaPlayer mediaPlayer;
         protected IVLCVout ivlcVout;
         protected Camera camera;
         protected LibVLC libvlc;
+        private ScaleGestureDetector scaleGestureDetector;
+        private GestureDetector panGestureDetector;
+        private float zoomScale = MIN_ZOOM_SCALE;
+        private float panX = 0f;
+        private float panY = 0f;
 
         public CameraView(Context context, Camera camera) {
             this.camera = camera;
@@ -335,6 +348,40 @@ public class SurveillanceFragment extends Fragment {
                 }
             });
             surfaceView.setOnFocusChangeListener((view, hasFocus) -> view.setBackgroundResource(hasFocus ? R.drawable.focus_border : 0));
+
+            // Pinch-to-zoom and drag-to-pan, active only while this camera is the one
+            // shown fullscreen (a no-op tap still reaches the grid/fullscreen toggle
+            // click listener via performClick()).
+            scaleGestureDetector = new ScaleGestureDetector(context, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                @Override
+                public boolean onScale(ScaleGestureDetector detector) {
+                    if (currentFullscreenCameraView != CameraView.this)
+                        return false;
+                    setZoomScale(zoomScale * detector.getScaleFactor());
+                    return true;
+                }
+            });
+            panGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    surfaceView.performClick();
+                    return true;
+                }
+
+                @Override
+                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                    if (currentFullscreenCameraView != CameraView.this || zoomScale <= MIN_ZOOM_SCALE)
+                        return false;
+                    setPan(panX - distanceX, panY - distanceY);
+                    return true;
+                }
+            });
+            surfaceView.setOnTouchListener((v, event) -> {
+                scaleGestureDetector.onTouchEvent(event);
+                panGestureDetector.onTouchEvent(event);
+                return true;
+            });
+
             SurfaceHolder holder = surfaceView.getHolder();
 
             holder.setKeepScreenOn(true);
@@ -395,6 +442,46 @@ public class SurveillanceFragment extends Fragment {
             Media m = new Media(libvlc, Uri.parse(url));
             mediaPlayer.setMedia(m);
             mediaPlayer.play();
+        }
+
+        private void setZoomScale(float newScale) {
+            zoomScale = Math.max(MIN_ZOOM_SCALE, Math.min(newScale, MAX_ZOOM_SCALE));
+            surfaceView.setScaleX(zoomScale);
+            surfaceView.setScaleY(zoomScale);
+            clampPan();
+        }
+
+        private void setPan(float newPanX, float newPanY) {
+            panX = newPanX;
+            panY = newPanY;
+            clampPan();
+        }
+
+        /**
+         * Keeps the pan offset within the bounds allowed by the current zoom, so the
+         * video can't be dragged past the point where it leaves blank space at the edges.
+         */
+        private void clampPan() {
+            float maxPanX = surfaceView.getWidth() * (zoomScale - 1f) / 2f;
+            float maxPanY = surfaceView.getHeight() * (zoomScale - 1f) / 2f;
+            panX = Math.max(-maxPanX, Math.min(panX, maxPanX));
+            panY = Math.max(-maxPanY, Math.min(panY, maxPanY));
+            surfaceView.setTranslationX(panX);
+            surfaceView.setTranslationY(panY);
+        }
+
+        /**
+         * Resets zoom/pan to their defaults, so the next time this camera is shown
+         * fullscreen it starts unzoomed.
+         */
+        public void resetZoomAndPan() {
+            zoomScale = MIN_ZOOM_SCALE;
+            panX = 0f;
+            panY = 0f;
+            surfaceView.setScaleX(1f);
+            surfaceView.setScaleY(1f);
+            surfaceView.setTranslationX(0f);
+            surfaceView.setTranslationY(0f);
         }
 
         /**
