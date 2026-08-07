@@ -46,6 +46,12 @@ android {
     buildFeatures {
         viewBinding true
     }
+    // Not published to Play Store; the dependency-transparency block this embeds in
+    // the APK's signing block gets flagged as an unexpected extra block by F-Droid's scanner.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
     namespace 'com.customisc.hojo'
 }
 
