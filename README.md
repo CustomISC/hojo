@@ -2,7 +2,7 @@
 
 # hOjo: RTSP Surveillance camera viewer for Android, with secondary high-res streams
 
-hOjo is a fork of [Ojo](https://github.com/penguin86/ojo), a FLOSS RTSP surveillance camera viewer for Android originally created by [Daniele Verducci](https://github.com/penguin86). This fork is maintained by [CustomISC](https://github.com/CustomISC) and is not affiliated with the original author; full credit for the vast majority of this codebase goes to Daniele Verducci and Ojo's contributors (see below).
+hOjo is a fork of [Ojo](https://git.ichibi.eu/penguin86/ojo), a FLOSS RTSP surveillance camera viewer for Android originally created by [Daniele Verducci](https://git.ichibi.eu/penguin86/). This fork is maintained by [CustomISC](https://github.com/CustomISC) and is not affiliated with the original author; full credit for the vast majority of this codebase goes to Daniele Verducci and Ojo's contributors (see below).
 
 [<img src="https://raw.githubusercontent.com/andOTP/andOTP/master/assets/badges/get-it-on-github.png" height="80">](https://github.com/CustomISC/hojo/releases/latest)
 
@@ -33,7 +33,7 @@ Like Ojo, hOjo is licensed under the GNU GENERAL PUBLIC LICENSE v3+ (see [LICENS
 ## Attribution
 
 hOjo is built almost entirely on Daniele Verducci's work on Ojo. Original Ojo contributors:
-- [Daniele Verducci](https://github.com/penguin86) - creator and maintainer of Ojo
+- [Daniele Verducci](https://git.ichibi.eu/penguin86/) - creator and maintainer of Ojo
 - Thanks to [brenard](https://github.com/brenard) for the new grid sizing method
 - Thanks to [davquar](https://github.com/davquar) for the fullscreen compatibility fix on Android 11
 - Thanks to [jayfan0](https://github.com/jayfan0) for the first deep link implementation
@@ -42,4 +42,4 @@ hOjo is built almost entirely on Daniele Verducci's work on Ojo. Original Ojo co
 
 ## How to contribute
 
-Issues and pull requests are welcome on the [CustomISC/hojo](https://github.com/CustomISC/hojo) repository. If you're looking for the original, unforked project, see [penguin86/ojo](https://github.com/penguin86/ojo).
+Issues and pull requests are welcome on the [CustomISC/hojo](https://github.com/CustomISC/hojo) repository. If you're looking for the original, unforked project, see [penguin86/ojo](https://git.ichibi.eu/penguin86/ojo).
