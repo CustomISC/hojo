@@ -1,0 +1,1 @@
+v1.2.1: points upstream Ojo links at git.ichibi.eu instead of GitHub, per the original author's request.
