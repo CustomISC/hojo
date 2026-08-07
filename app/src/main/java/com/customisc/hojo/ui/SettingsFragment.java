@@ -57,18 +57,18 @@ public class SettingsFragment extends Fragment {
         binding.settingsToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menuitem_add_camera:
-                        ((SettingsActivity)getActivity()).navigateToFragment(R.id.action_settingsToCameraUrl);
-                        return true;
-                    case R.id.menuitem_allow_rotation:
-                        ((SettingsActivity)getActivity()).toggleRotationEnabledSetting();
-                        SharedPreferencesManager.saveRotationEnabled(getContext(), ((SettingsActivity)getActivity()).getRotationEnabledSetting());
-                        item.setTitle(((SettingsActivity)getActivity()).getRotationEnabledSetting() ? R.string.menuitem_deny_rotation : R.string.menuitem_allow_rotation);
-                        return true;
-                    case R.id.menuitem_info:
-                        ((SettingsActivity)getActivity()).navigateToFragment(R.id.action_SettingsToInfoFragment);
-                        return true;
+                int id = item.getItemId();
+                if (id == R.id.menuitem_add_camera) {
+                    ((SettingsActivity)getActivity()).navigateToFragment(R.id.action_settingsToCameraUrl);
+                    return true;
+                } else if (id == R.id.menuitem_allow_rotation) {
+                    ((SettingsActivity)getActivity()).toggleRotationEnabledSetting();
+                    SharedPreferencesManager.saveRotationEnabled(getContext(), ((SettingsActivity)getActivity()).getRotationEnabledSetting());
+                    item.setTitle(((SettingsActivity)getActivity()).getRotationEnabledSetting() ? R.string.menuitem_deny_rotation : R.string.menuitem_allow_rotation);
+                    return true;
+                } else if (id == R.id.menuitem_info) {
+                    ((SettingsActivity)getActivity()).navigateToFragment(R.id.action_SettingsToInfoFragment);
+                    return true;
                 }
                 return false;
             }
