@@ -9,8 +9,8 @@ android {
         applicationId "com.customisc.hojo"
         minSdkVersion 17
         targetSdkVersion 33
-        versionCode 13
-        versionName "1.1.1"
+        versionCode 14
+        versionName "1.2.0"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -45,6 +45,12 @@ android {
     }
     buildFeatures {
         viewBinding true
+    }
+    // Not published to Play Store; the dependency-transparency block this embeds in
+    // the APK's signing block gets flagged as an unexpected extra block by F-Droid's scanner.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
     namespace 'com.customisc.hojo'
 }

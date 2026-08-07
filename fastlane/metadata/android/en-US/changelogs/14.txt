@@ -1,0 +1,1 @@
+v1.2.0: upgrades the build to Gradle 8.7/AGP 8.5.2 (builds natively under modern JDKs), disables the Play Store dependency-transparency block in the APK, and shortens the Russian store listing text.
