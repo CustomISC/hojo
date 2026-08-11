@@ -9,8 +9,8 @@ android {
         applicationId "com.customisc.hojo"
         minSdkVersion 17
         targetSdkVersion 33
-        versionCode 15
-        versionName "1.2.1"
+        versionCode 16
+        versionName "1.3.0"
 
         vectorDrawables.useSupportLibrary = true
 
@@ -53,6 +53,35 @@ android {
         includeInBundle = false
     }
     namespace 'com.customisc.hojo'
+
+    // libvlc-all bundles native libs for every ABI, which is most of this app's ~85MB
+    // size. Split into one APK per ABI (plus a universal fallback) so most users only
+    // download their own architecture's libs.
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            universalApk true
+        }
+    }
+}
+
+// F-Droid requires a distinct versionCode per ABI-specific APK, encoded as
+// 10 * <base versionCode> + <ABI digit>, with the digits ordered
+// armeabi-v7a(1) < arm64-v8a(2) < x86(3) < x86_64(4) so that on a device compatible
+// with more than one split (e.g. arm64 devices can also run armeabi-v7a builds),
+// the higher-versionCode native build is preferred. The universal APK (no ABI
+// filter, published on GitHub only -- not referenced by the F-Droid recipe) uses
+// digit 0, keeping every distributed variant's versionCode monotonic per release.
+def abiVersionCodeDigits = ['armeabi-v7a': 1, 'arm64-v8a': 2, 'x86': 3, 'x86_64': 4]
+
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def abi = output.getFilter(com.android.build.OutputFile.ABI)
+        def digit = abi != null ? abiVersionCodeDigits.get(abi, 0) : 0
+        output.versionCodeOverride = variant.versionCode * 10 + digit
+    }
 }
 
 dependencies {

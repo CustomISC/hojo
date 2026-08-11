@@ -1,0 +1,1 @@
+v1.3.0: adds per-ABI APKs (much smaller downloads than the universal build) alongside continued reproducible-build support.
