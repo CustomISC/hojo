@@ -1,1 +1,1 @@
-hOjo è un semplice client di videosorveglianza con stream secondari ad alta risoluzione
+hOjo è un semplice client di videosorveglianza con stream ad alta risoluzione
